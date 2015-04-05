@@ -26,6 +26,7 @@ public class GifsController {
     private final EventBus eventBus;
     private Toast toast;
     private String secret;
+    private EventsTracker eventsTracker = EventsTracker.getInstance();
 
     public static void init(Context context, EventBus eventBus) {
         INSTANCE = new GifsController(context, eventBus);
@@ -82,6 +83,7 @@ public class GifsController {
                 }
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
+                eventsTracker.trackFailedKitten();
             }
         });
     }

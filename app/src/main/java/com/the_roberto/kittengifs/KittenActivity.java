@@ -34,6 +34,7 @@ public class KittenActivity extends ActionBarActivity {
     @InjectView(R.id.progress_bar) View progressBar;
     private EventBus eventBus = EventBus.getDefault();
     private GifsController gifsController = GifsController.getInstance();
+    private EventsTracker eventsTracker = EventsTracker.getInstance();
     private String lastGifUrl;
 
     @Override
@@ -85,6 +86,7 @@ public class KittenActivity extends ActionBarActivity {
                     intent.setType("image/*");
                     intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(lastGifUrl));
                     startActivity(intent);
+                    eventsTracker.trackShare();
                 }
                 return true;
         }
@@ -95,6 +97,7 @@ public class KittenActivity extends ActionBarActivity {
     void nextGif() {
         gifsController.nextGif();
         progressBar.setVisibility(View.VISIBLE);
+        eventsTracker.trackNextKitten();
     }
 
     @Override
@@ -127,12 +130,14 @@ public class KittenActivity extends ActionBarActivity {
                     public boolean onException(Exception e, String model, Target<GifDrawable> target, boolean isFirstResource) {
                         setProgressBarEnabled(false);
                         Toast.makeText(getApplicationContext(), "Meow! Check your Internet connection.", Toast.LENGTH_SHORT).show();
+                        eventsTracker.trackFailedKitten();
                         return false;
                     }
 
                     @Override
                     public boolean onResourceReady(GifDrawable resource, String model, Target<GifDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                         progressBar.setVisibility(View.GONE);
+                        eventsTracker.trackSuccessfulKitten();
                         return false;
                     }
                 })

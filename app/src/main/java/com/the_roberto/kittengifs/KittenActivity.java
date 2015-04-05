@@ -82,7 +82,7 @@ public class KittenActivity extends ActionBarActivity {
                 if (lastGifUrl != null) {
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_SEND);
-                    intent.putExtra(Intent.EXTRA_TEXT, "Checkout this kitty :) " + lastGifUrl + " \nFound via http://goo.gl/Rio4Ji");
+                    intent.putExtra(Intent.EXTRA_TEXT, "Check out this kitty :) " + lastGifUrl + " \nFound via http://goo.gl/Rio4Ji");
                     intent.setType("image/*");
                     intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(lastGifUrl));
                     startActivity(intent);

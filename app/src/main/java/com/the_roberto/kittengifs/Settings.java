@@ -9,6 +9,7 @@ public class Settings {
 
     public static final String PREFS_NAME = "pref_setting";
     public static final String PREF_CONTENT_TYPE = "pref_content_type";
+    public static final String PREF_LAST_OPENED_GIF = "pref_last_opened_gif";
 
     public static void setContentType(Context context, ContentType contentType) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
@@ -19,6 +20,16 @@ public class Settings {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         int ordinal = prefs.getInt(PREF_CONTENT_TYPE, 0);
         return ContentType.values()[ordinal];
+    }
+
+    public static void setLastOpenedGif(Context context, String url) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        prefs.edit().putString(PREF_LAST_OPENED_GIF, url).apply();
+    }
+
+    public static String getLastOpenedGif(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        return prefs.getString(PREF_LAST_OPENED_GIF, null);
     }
 
     public enum ContentType {

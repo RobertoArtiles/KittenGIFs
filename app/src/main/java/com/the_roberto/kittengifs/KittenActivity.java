@@ -35,7 +35,6 @@ public class KittenActivity extends ActionBarActivity {
     private EventBus eventBus = EventBus.getDefault();
     private GifsController gifsController = GifsController.getInstance();
     private EventsTracker eventsTracker = EventsTracker.getInstance();
-    private String lastGifUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +64,12 @@ public class KittenActivity extends ActionBarActivity {
         if (actionBar != null) {
             actionBar.setTitle(null);
         }
-        nextGif();
+        String lastOpenedGif = Settings.getLastOpenedGif(this);
+        if (lastOpenedGif != null) {
+            showGif(lastOpenedGif);
+        } else {
+            nextGif();
+        }
     }
 
     @Override
@@ -79,6 +83,7 @@ public class KittenActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.share:
+                String lastGifUrl = Settings.getLastOpenedGif(this);
                 if (lastGifUrl != null) {
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_SEND);
@@ -118,7 +123,6 @@ public class KittenActivity extends ActionBarActivity {
     }
 
     private void showGif(String url) {
-        lastGifUrl = url;
         videoView.setVisibility(View.GONE);
         gifView.setVisibility(View.VISIBLE);
         Glide.with(this).load(url)

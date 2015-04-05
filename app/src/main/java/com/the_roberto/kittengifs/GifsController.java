@@ -67,6 +67,7 @@ public class GifsController {
                     toast.cancel();
                 }
                 eventBus.post(new NewGifArrivedEvent(randomGifResponse.data.imageUrl, randomGifResponse.data.imageUrlMp4));
+                Settings.setLastOpenedGif(context, randomGifResponse.data.imageUrl);
             }
 
             @Override

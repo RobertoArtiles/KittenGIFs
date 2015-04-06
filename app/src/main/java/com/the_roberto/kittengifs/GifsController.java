@@ -7,7 +7,9 @@ import android.widget.Toast;
 
 import com.the_roberto.kittengifs.event.NewGifArrivedEvent;
 import com.the_roberto.kittengifs.giphy.GiphyService;
-import com.the_roberto.kittengifs.giphy.RandomGifResponse;
+import com.the_roberto.kittengifs.giphy.SearchGifResponse;
+
+import java.util.Random;
 
 import de.greenrobot.event.EventBus;
 import retrofit.Callback;
@@ -27,6 +29,7 @@ public class GifsController {
     private Toast toast;
     private String secret;
     private EventsTracker eventsTracker = EventsTracker.getInstance();
+    private Random random = new Random();
 
     public static void init(Context context, EventBus eventBus) {
         INSTANCE = new GifsController(context, eventBus);
@@ -59,15 +62,21 @@ public class GifsController {
     }
 
     public void nextGif() {
-        service.getRandomGif("cat", new Callback<RandomGifResponse>() {
-
+        service.getGifs("kitten", random.nextInt(Settings.getMaxOffset(context)), 1, new Callback<SearchGifResponse>() {
             @Override
-            public void success(RandomGifResponse randomGifResponse, Response response) {
+            public void success(SearchGifResponse searchGifResponse, Response response) {
                 if (toast != null) {
                     toast.cancel();
                 }
-                eventBus.post(new NewGifArrivedEvent(randomGifResponse.data.imageUrl, randomGifResponse.data.imageUrlMp4));
-                Settings.setLastOpenedGif(context, randomGifResponse.data.imageUrl);
+                if (searchGifResponse.data != null && searchGifResponse.data.length > 0) {
+                    SearchGifResponse.Data.Images.Gif original = searchGifResponse.data[0].images.original;
+                    eventBus.post(new NewGifArrivedEvent(original.url, original.mp4));
+                    Settings.setLastOpenedGif(context, original.url);
+                } else {
+                    toast = Toast.makeText(context, "Meow! Something went wrong. Try again.", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                Settings.setMaxOffset(context, searchGifResponse.pagination.totalCount);
             }
 
             @Override
@@ -88,4 +97,5 @@ public class GifsController {
             }
         });
     }
+
 }

@@ -5,6 +5,7 @@ import android.util.Base64;
 import android.view.Gravity;
 import android.widget.Toast;
 
+import com.the_roberto.kittengifs.event.GifFetchFailedEvent;
 import com.the_roberto.kittengifs.event.NewGifArrivedEvent;
 import com.the_roberto.kittengifs.giphy.GiphyService;
 import com.the_roberto.kittengifs.giphy.SearchGifResponse;
@@ -28,7 +29,6 @@ public class GifsController {
     private final EventBus eventBus;
     private Toast toast;
     private String secret;
-    private EventsTracker eventsTracker = EventsTracker.getInstance();
     private Random random = new Random();
 
     public static void init(Context context, EventBus eventBus) {
@@ -74,6 +74,7 @@ public class GifsController {
                     Settings.setLastOpenedGif(context, original.url);
                 } else {
                     toast = Toast.makeText(context, "Meow! Something went wrong. Try again.", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
                 }
                 Settings.setMaxOffset(context, searchGifResponse.pagination.totalCount);
@@ -93,7 +94,8 @@ public class GifsController {
                 }
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
-                eventsTracker.trackFailedKitten();
+                EventsTracker.getInstance().trackFailedKitten();
+                eventBus.post(new GifFetchFailedEvent());
             }
         });
     }

@@ -19,6 +19,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.the_roberto.kittengifs.event.GifFetchFailedEvent;
 import com.the_roberto.kittengifs.event.NewGifArrivedEvent;
 
 import butterknife.ButterKnife;
@@ -33,8 +34,6 @@ public class KittenActivity extends ActionBarActivity {
     @InjectView(R.id.video_view) VideoView videoView;
     @InjectView(R.id.progress_bar) View progressBar;
     private EventBus eventBus = EventBus.getDefault();
-    private GifsController gifsController = GifsController.getInstance();
-    private EventsTracker eventsTracker = EventsTracker.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +90,7 @@ public class KittenActivity extends ActionBarActivity {
                     intent.setType("image/*");
                     intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(lastGifUrl));
                     startActivity(intent);
-                    eventsTracker.trackShare();
+                    EventsTracker.getInstance().trackShare();
                 }
                 return true;
         }
@@ -100,9 +99,9 @@ public class KittenActivity extends ActionBarActivity {
 
     @OnClick({R.id.container})
     void nextGif() {
-        gifsController.nextGif();
+        GifsController.getInstance().nextGif();
         progressBar.setVisibility(View.VISIBLE);
-        eventsTracker.trackNextKitten();
+        EventsTracker.getInstance().trackNextKitten();
     }
 
     @Override
@@ -122,6 +121,10 @@ public class KittenActivity extends ActionBarActivity {
         }
     }
 
+    public void onEventMainThread(GifFetchFailedEvent event) {
+        setProgressBarEnabled(false);
+    }
+
     private void showGif(String url) {
         videoView.setVisibility(View.GONE);
         gifView.setVisibility(View.VISIBLE);
@@ -134,14 +137,14 @@ public class KittenActivity extends ActionBarActivity {
                     public boolean onException(Exception e, String model, Target<GifDrawable> target, boolean isFirstResource) {
                         setProgressBarEnabled(false);
                         Toast.makeText(getApplicationContext(), "Meow! Check your Internet connection.", Toast.LENGTH_SHORT).show();
-                        eventsTracker.trackFailedKitten();
+                        EventsTracker.getInstance().trackFailedKitten();
                         return false;
                     }
 
                     @Override
                     public boolean onResourceReady(GifDrawable resource, String model, Target<GifDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        progressBar.setVisibility(View.GONE);
-                        eventsTracker.trackSuccessfulKitten();
+                        setProgressBarEnabled(false);
+                        EventsTracker.getInstance().trackSuccessfulKitten();
                         return false;
                     }
                 })

@@ -11,6 +11,7 @@ public class Settings {
     public static final String PREF_CONTENT_TYPE = "pref_content_type";
     public static final String PREF_LAST_OPENED_GIF = "pref_last_opened_gif";
     public static final String PREF_MAX_OFFSET = "pref_max_offset";
+    public static final String PREF_VIEWS_COUNT = "pref_views_count";
 
     public static void setContentType(Context context, ContentType contentType) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
@@ -41,6 +42,16 @@ public class Settings {
     public static int getMaxOffset(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         return prefs.getInt(PREF_MAX_OFFSET, 100);
+    }
+
+    public static long getViewsCount(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        return prefs.getLong(PREF_VIEWS_COUNT, 0);
+    }
+
+    public static void setViewsCount(Context context, long viewsCount) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        prefs.edit().putLong(PREF_VIEWS_COUNT, viewsCount).apply();
     }
 
     public enum ContentType {

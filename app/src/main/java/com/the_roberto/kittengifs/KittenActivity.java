@@ -33,6 +33,7 @@ public class KittenActivity extends ActionBarActivity {
     @InjectView(R.id.gif) ImageView gifView;
     @InjectView(R.id.video_view) VideoView videoView;
     @InjectView(R.id.progress_bar) View progressBar;
+    @InjectView(R.id.counter) CounterView counterView;
     private EventBus eventBus = EventBus.getDefault();
 
     @Override
@@ -101,6 +102,7 @@ public class KittenActivity extends ActionBarActivity {
     void nextGif() {
         GifsController.getInstance().nextGif();
         progressBar.setVisibility(View.VISIBLE);
+        counterView.increment();
         EventsTracker.getInstance().trackNextKitten();
     }
 

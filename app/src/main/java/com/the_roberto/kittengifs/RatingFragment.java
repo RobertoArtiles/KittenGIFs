@@ -60,6 +60,7 @@ public class RatingFragment extends DialogFragment {
     public void onCancel(DialogInterface dialog) {
         super.onCancel(dialog);
         eventsTracker.trackRatingLater(/*cancel*/ true);
+        later();
     }
 
     private void later() {

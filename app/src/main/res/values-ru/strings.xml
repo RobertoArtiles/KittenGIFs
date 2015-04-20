@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Kitten GIFs</string>
+    <string name="dialog_rating_title">Хочешь помочь Kitten GIFs?</string>
+    <string name="dialog_rating_message">Мяу!\nОцени это приложение в Гугл Плей и помоги показать наших котят всему миру.</string>
+    <string name="dialog_rating_positive">Помочь</string>
+    <string name="dialog_rating_neutral">Может Позже</string>
+    <string name="dialog_rating_negative">Нет</string>
+</resources>

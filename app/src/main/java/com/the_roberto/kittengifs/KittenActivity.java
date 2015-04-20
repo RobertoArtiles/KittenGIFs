@@ -100,9 +100,13 @@ public class KittenActivity extends ActionBarActivity {
 
     @OnClick({R.id.container})
     void nextGif() {
-        GifsController.getInstance().nextGif();
-        progressBar.setVisibility(View.VISIBLE);
-        counterView.increment();
+        if (counterView.getCount() + 1 >= Settings.getKittensBeforeAskingToRate(this)) {
+            getSupportFragmentManager().beginTransaction().add(new RatingFragment(), "rating_fragment").commitAllowingStateLoss();
+        } else {
+            GifsController.getInstance().nextGif();
+            progressBar.setVisibility(View.VISIBLE);
+            counterView.increment();
+        }
         EventsTracker.getInstance().trackNextKitten();
     }
 

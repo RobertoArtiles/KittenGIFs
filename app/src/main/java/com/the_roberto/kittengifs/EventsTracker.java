@@ -57,4 +57,26 @@ public class EventsTracker {
                 .setLabel("fail")
                 .build());
     }
+
+    public void trackRatingLater(boolean cancel) {
+        tracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Rating")
+                .setAction("Later")
+                .setLabel(cancel ? "cancel" : "explicit")
+                .build());
+    }
+
+    public void trackRatingYes() {
+        tracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Rating")
+                .setAction("Yes")
+                .build());
+    }
+
+    public void trackRatingNah() {
+        tracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Rating")
+                .setAction("Nah")
+                .build());
+    }
 }

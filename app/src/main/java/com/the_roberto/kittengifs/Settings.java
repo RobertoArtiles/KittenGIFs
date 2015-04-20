@@ -12,6 +12,8 @@ public class Settings {
     public static final String PREF_LAST_OPENED_GIF = "pref_last_opened_gif";
     public static final String PREF_MAX_OFFSET = "pref_max_offset";
     public static final String PREF_VIEWS_COUNT = "pref_views_count";
+    public static final String PREF_KITTENS_BEFORE_ASKING_TO_RATE = "pref_kittens_before_asking_to_rate";
+    public static final String PREF_CURRENT_VERSION = "pref_current_version";
 
     public static void setContentType(Context context, ContentType contentType) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
@@ -53,6 +55,27 @@ public class Settings {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         prefs.edit().putLong(PREF_VIEWS_COUNT, viewsCount).apply();
     }
+
+    public static void setKittensBeforeAskingToRate(Context context, int kittens) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        prefs.edit().putInt(PREF_KITTENS_BEFORE_ASKING_TO_RATE, kittens).apply();
+    }
+
+    public static int getKittensBeforeAskingToRate(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        return prefs.getInt(PREF_KITTENS_BEFORE_ASKING_TO_RATE, 10);
+    }
+
+    public static void setCurrentVersion(Context context, int version) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        prefs.edit().putInt(PREF_CURRENT_VERSION, version).apply();
+    }
+
+    public static int getCurrentVersion(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        return prefs.getInt(PREF_CURRENT_VERSION, 0);
+    }
+
 
     public enum ContentType {
         GIF,

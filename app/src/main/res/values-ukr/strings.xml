@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Kitten GIFs</string>
+    <string name="dialog_rating_title">Хочеш допомогти Kitten GIFs?</string>
+    <string name="dialog_rating_message">Няв!\nОціни цей додаток у Гугл Плей і допомжи показати наших кошенят усьому світу.</string>
+    <string name="dialog_rating_positive">Допомогти</string>
+    <string name="dialog_rating_neutral">Пізніше</string>
+    <string name="dialog_rating_negative">Нє</string>
+</resources>

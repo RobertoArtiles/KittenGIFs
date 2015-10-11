@@ -23,24 +23,24 @@ import com.the_roberto.kittengifs.event.GifFetchFailedEvent;
 import com.the_roberto.kittengifs.event.NewGifArrivedEvent;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 
 public class KittenActivity extends ActionBarActivity {
 
-    @InjectView(R.id.gif) ImageView gifView;
-    @InjectView(R.id.video_view) VideoView videoView;
-    @InjectView(R.id.progress_bar) View progressBar;
-    @InjectView(R.id.counter) CounterView counterView;
+    @Bind(R.id.gif) ImageView gifView;
+    @Bind(R.id.video_view) VideoView videoView;
+    @Bind(R.id.progress_bar) View progressBar;
+    @Bind(R.id.counter) CounterView counterView;
     private EventBus eventBus = EventBus.getDefault();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kitten);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         eventBus.register(this);
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override

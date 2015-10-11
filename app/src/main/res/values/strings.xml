@@ -5,4 +5,5 @@
     <string name="dialog_rating_positive">Yes (Rate)</string>
     <string name="dialog_rating_neutral">Maybe Later</string>
     <string name="dialog_rating_negative">Nah</string>
+    <string name="error_something_went_wrong">Meow! Something went wrong :(</string>
 </resources>

@@ -5,33 +5,25 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.gif.GifDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.the_roberto.kittengifs.event.GifFetchFailedEvent;
 import com.the_roberto.kittengifs.event.NewGifArrivedEvent;
 
-import butterknife.ButterKnife;
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 
-public class KittenActivity extends ActionBarActivity {
+public class KittenActivity extends AppCompatActivity {
 
-    @Bind(R.id.gif) ImageView gifView;
-    @Bind(R.id.video_view) VideoView videoView;
+    @Bind(R.id.video_view) TextureVideoView videoView;
     @Bind(R.id.progress_bar) View progressBar;
     @Bind(R.id.counter) CounterView counterView;
     private EventBus eventBus = EventBus.getDefault();
@@ -48,27 +40,14 @@ public class KittenActivity extends ActionBarActivity {
                 mp.setLooping(true);
             }
         });
-        videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-            private int errorCount;
 
-            @Override
-            public boolean onError(MediaPlayer mp, int what, int extra) {
-                if (++errorCount == 2) {
-                    Settings.setContentType(getApplicationContext(), Settings.ContentType.GIF);
-                }
-                nextGif();
-                return true;
-            }
-        });
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(null);
         }
-        String lastOpenedGif = Settings.getLastOpenedGif(this);
+        String lastOpenedGif = Settings.getLastOpenedKitten(this);
         if (lastOpenedGif != null) {
-            showGif(lastOpenedGif);
-        } else {
-            nextGif();
+            showVideo(lastOpenedGif);
         }
     }
 
@@ -83,7 +62,7 @@ public class KittenActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.share:
-                String lastGifUrl = Settings.getLastOpenedGif(this);
+                String lastGifUrl = Settings.getLastOpenedKitten(this);
                 if (lastGifUrl != null) {
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_SEND);
@@ -99,12 +78,12 @@ public class KittenActivity extends ActionBarActivity {
     }
 
     @OnClick({R.id.container})
-    void nextGif() {
+    void nextKitten() {
         if (counterView.getCount() + 1 >= Settings.getKittensBeforeAskingToRate(this)) {
             getSupportFragmentManager().beginTransaction().add(new RatingFragment(), "rating_fragment").commitAllowingStateLoss();
         } else {
-            GifsController.getInstance().nextGif();
-            progressBar.setVisibility(View.VISIBLE);
+            GifsController.getInstance().nextKitten();
+            setProgressBarEnabled(true);
             counterView.increment();
         }
         EventsTracker.getInstance().trackNextKitten();
@@ -122,7 +101,7 @@ public class KittenActivity extends ActionBarActivity {
                 showVideo(event.imageUrlMp4);
                 break;
             case GIF:
-                showGif(event.imageUrl);
+                // not implemented
                 break;
         }
     }
@@ -131,41 +110,31 @@ public class KittenActivity extends ActionBarActivity {
         setProgressBarEnabled(false);
     }
 
-    private void showGif(String url) {
-        videoView.setVisibility(View.GONE);
-        gifView.setVisibility(View.VISIBLE);
-        Glide.with(this).load(url)
-                .asGif()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .crossFade()
-                .listener(new RequestListener<String, GifDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, String model, Target<GifDrawable> target, boolean isFirstResource) {
-                        setProgressBarEnabled(false);
-                        Toast.makeText(getApplicationContext(), "Meow! Check your Internet connection.", Toast.LENGTH_SHORT).show();
-                        EventsTracker.getInstance().trackFailedKitten();
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(GifDrawable resource, String model, Target<GifDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        setProgressBarEnabled(false);
-                        EventsTracker.getInstance().trackSuccessfulKitten();
-                        return false;
-                    }
-                })
-                .into(gifView);
-
-    }
-
     private void showVideo(String url) {
-        gifView.setVisibility(View.GONE);
         videoView.setVisibility(View.VISIBLE);
-        videoView.setVideoURI(Uri.parse("http://s3.amazonaws.com/giphygifs/media/dYO5GaHYm4PrG/giphy.mp4"));
-        videoView.start();
+        videoView.setVideoURI(Uri.parse(url));
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.setLooping(true);
+                videoView.start();
+                setProgressBarEnabled(false);
+                EventsTracker.getInstance().trackSuccessfulKitten();
+            }
+        });
+        videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                setProgressBarEnabled(false);
+                Toast.makeText(getApplicationContext(), getString(R.string.error_something_went_wrong), Toast.LENGTH_SHORT).show();
+                EventsTracker.getInstance().trackFailedKitten();
+                return true;
+            }
+        });
     }
 
-    private void setProgressBarEnabled(boolean b) {
-        progressBar.setVisibility(View.GONE);
+    private void setProgressBarEnabled(boolean enabled) {
+        progressBar.setVisibility(enabled ? View.VISIBLE : View.GONE);
     }
 }

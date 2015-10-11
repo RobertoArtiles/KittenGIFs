@@ -31,7 +31,7 @@ public class Settings {
         prefs.edit().putString(PREF_LAST_OPENED_GIF, url).apply();
     }
 
-    public static String getLastOpenedGif(Context context) {
+    public static String getLastOpenedKitten(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         return prefs.getString(PREF_LAST_OPENED_GIF, null);
     }

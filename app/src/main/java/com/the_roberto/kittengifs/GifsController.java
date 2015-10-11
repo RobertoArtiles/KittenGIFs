@@ -61,7 +61,7 @@ public class GifsController {
         service = restAdapter.create(GiphyService.class);
     }
 
-    public void nextGif() {
+    public void nextKitten() {
         service.getGifs("kitten", random.nextInt(Settings.getMaxOffset(context)), 1, new Callback<SearchGifResponse>() {
             @Override
             public void success(SearchGifResponse searchGifResponse, Response response) {

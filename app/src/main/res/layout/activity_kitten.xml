@@ -11,14 +11,7 @@
         android:layout_height="match_parent"
         android:foreground="?android:attr/selectableItemBackground">
 
-        <ImageView
-            android:id="@+id/gif"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            />
-
-        <VideoView
+        <com.the_roberto.kittengifs.TextureVideoView
             android:id="@+id/video_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

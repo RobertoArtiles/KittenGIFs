@@ -5,4 +5,5 @@
     <string name="dialog_rating_positive">Помочь</string>
     <string name="dialog_rating_neutral">Может Позже</string>
     <string name="dialog_rating_negative">Нет</string>
+    <string name="error_something_went_wrong">Мяу! Что-то пошло не так :(</string>
 </resources>

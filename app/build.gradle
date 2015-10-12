@@ -4,13 +4,13 @@ apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "22.0.1"
+    buildToolsVersion "23.0.1"
     defaultConfig {
         applicationId "com.the_roberto.kittengifs"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 13
-        versionName "0.5.1"
+        versionCode 14
+        versionName "0.5.2"
     }
     buildTypes {
         debug {
@@ -18,7 +18,7 @@ android {
         }
 
         release {
-            minifyEnabled true
+            minifyEnabled false
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

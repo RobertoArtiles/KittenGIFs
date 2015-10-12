@@ -5,24 +5,12 @@ import android.content.Context.MODE_PRIVATE
 
 object Settings {
     const val PREFS_NAME = "pref_setting"
-    const val PREF_CONTENT_TYPE = "pref_content_type"
     const val PREF_LAST_OPENED_KITTEN = "pref_last_opened_kitten"
     const val PREF_KITTEN_TO_SHARE_URL = "pref_kitten_to_share_url"
     const val PREF_MAX_OFFSET = "pref_max_offset"
     const val PREF_VIEWS_COUNT = "pref_views_count"
     const val PREF_KITTENS_BEFORE_ASKING_TO_RATE = "pref_kittens_before_asking_to_rate"
     const val PREF_CURRENT_VERSION = "pref_current_version"
-
-    fun setContentType(context: Context, contentType: ContentType) {
-        val prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
-        prefs.edit().putInt(PREF_CONTENT_TYPE, contentType.ordinal()).apply()
-    }
-
-    fun getContentType(context: Context): ContentType {
-        val prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
-        val ordinal = prefs.getInt(PREF_CONTENT_TYPE, 0)
-        return ContentType.values()[ordinal]
-    }
 
     fun setLastOpenedKitten(context: Context, url: String?) {
         val prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE)

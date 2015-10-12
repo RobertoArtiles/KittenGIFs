@@ -5,6 +5,7 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -16,6 +17,7 @@ import de.greenrobot.event.EventBus
 
 
 class KittenActivity : AppCompatActivity() {
+    val TAG = "KittenActivity"
     val videoView: TextureVideoView by bindView(R.id.video_view)
     val progressBar: View by bindView(R.id.progress_bar)
     val counterView: CounterView by bindView(R.id.counter)
@@ -85,16 +87,10 @@ class KittenActivity : AppCompatActivity() {
     }
 
     fun onEventMainThread(event: NewGifArrivedEvent) {
-        when (Settings.getContentType(this)) {
-            Settings.ContentType.MP4 -> {
-                val imageUrlMp4 = event.imageUrlMp4
-                if (imageUrlMp4 != null) {
-                    showVideo(imageUrlMp4)
-                }
-            }
-            Settings.ContentType.GIF -> {
-                // not implemented
-            }
+        Log.d(TAG, "onEventMainThread(NewGifArrivedEvent)")
+        val imageUrlMp4 = event.imageUrlMp4
+        if (imageUrlMp4 != null) {
+            showVideo(imageUrlMp4)
         }
     }
 
@@ -103,9 +99,11 @@ class KittenActivity : AppCompatActivity() {
     }
 
     private fun showVideo(url: String) {
+        Log.d(TAG, "showVideo: $url")
         videoView.setVideoURI(Uri.parse(url))
         videoView.setOnPreparedListener(object : MediaPlayer.OnPreparedListener {
             override fun onPrepared(mp: MediaPlayer) {
+                Log.d(TAG, "onPrepared")
                 mp.isLooping = true
                 videoView.start()
                 setProgressBarEnabled(false)
@@ -115,6 +113,7 @@ class KittenActivity : AppCompatActivity() {
         videoView.setOnErrorListener(object : MediaPlayer.OnErrorListener {
 
             override fun onError(mp: MediaPlayer, what: Int, extra: Int): Boolean {
+                Log.d(TAG, "onError")
                 setProgressBarEnabled(false)
                 Toast.makeText(applicationContext, getString(R.string.error_something_went_wrong), Toast.LENGTH_SHORT).show()
                 EventsTracker.trackFailedKitten()

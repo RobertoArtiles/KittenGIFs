@@ -21,6 +21,10 @@ class App : Application() {
         if (oldVersion < 13) {
             Settings.setKittensBeforeAskingToRate(this, Settings.getViewsCount(this).toInt() + Settings.getKittensBeforeAskingToRate(this))
         }
+        if (oldVersion < 14) {
+            Settings.setLastOpenedKitten(this, null);
+            Settings.setKittenToShareUrl(this, null);
+        }
         Settings.setCurrentVersion(this, BuildConfig.VERSION_CODE)
     }
 }

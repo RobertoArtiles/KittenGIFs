@@ -30,7 +30,7 @@ class CounterView : TextView {
 
     private fun init(context: Context) {
         count = Settings.getViewsCount(context)
-        text = java.lang.Long.toString(count)
+        text = count.toString()
     }
 
     fun increment() {

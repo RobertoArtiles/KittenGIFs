@@ -51,6 +51,7 @@ object GifsController {
                     var original = searchGifResponse.data?.get(0)?.images?.original
                     eventBus.post(NewGifArrivedEvent(original?.url, original?.mp4))
                     Settings.setLastOpenedKitten(context, original?.mp4)
+                    Settings.setKittenToShareUrl(context, original?.url)
                 } else {
                     toast = Toast.makeText(context, "Meow! Something went wrong. Try again.", Toast.LENGTH_SHORT)
                     toast!!.setGravity(Gravity.CENTER, 0, 0)

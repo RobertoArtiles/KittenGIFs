@@ -18,6 +18,7 @@ class RatingFragment : DialogFragment() {
         return AlertDialog.Builder(activity).setTitle(getString(R.string.dialog_rating_title)).setMessage(getString(R.string.dialog_rating_message))
                 .setPositiveButton(getString(R.string.dialog_rating_positive), object : DialogInterface.OnClickListener {
                     override fun onClick(dialog: DialogInterface, which: Int) {
+                        neverAsk()
                         EventsTracker.trackRatingYes()
                         val appPackageName = "com.the_roberto.kittengifs"
                         try {

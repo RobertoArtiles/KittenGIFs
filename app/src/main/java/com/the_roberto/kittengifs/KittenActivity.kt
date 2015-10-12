@@ -53,13 +53,12 @@ class KittenActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.share -> {
-                val lastGifUrl = Settings.getLastOpenedKitten(this)
+                val lastGifUrl = Settings.getKittenToShareUrl(this)
                 if (lastGifUrl != null) {
                     val intent = Intent()
                     intent.setAction(Intent.ACTION_SEND)
                     intent.putExtra(Intent.EXTRA_TEXT, "Check out this kitty :) $lastGifUrl \nFound via http://goo.gl/Rio4Ji")
-                    intent.setType("image/*")
-                    intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(lastGifUrl))
+                    intent.setType("text/plain")
                     startActivity(intent)
                     EventsTracker.trackShare()
                 }
@@ -87,7 +86,12 @@ class KittenActivity : AppCompatActivity() {
 
     fun onEventMainThread(event: NewGifArrivedEvent) {
         when (Settings.getContentType(this)) {
-            Settings.ContentType.MP4 -> showVideo(event.imageUrlMp4)
+            Settings.ContentType.MP4 -> {
+                val imageUrlMp4 = event.imageUrlMp4
+                if (imageUrlMp4 != null) {
+                    showVideo(imageUrlMp4)
+                }
+            }
             Settings.ContentType.GIF -> {
                 // not implemented
             }
@@ -99,7 +103,6 @@ class KittenActivity : AppCompatActivity() {
     }
 
     private fun showVideo(url: String) {
-        videoView.visibility = View.VISIBLE
         videoView.setVideoURI(Uri.parse(url))
         videoView.setOnPreparedListener(object : MediaPlayer.OnPreparedListener {
             override fun onPrepared(mp: MediaPlayer) {

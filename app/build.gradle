@@ -8,9 +8,9 @@ android {
     defaultConfig {
         applicationId "com.the_roberto.kittengifs"
         minSdkVersion 15
-        versionCode 16
-        versionName "0.5.4"
         targetSdkVersion 25
+        versionCode 17
+        versionName "0.5.5"
     }
     buildTypes {
         debug {

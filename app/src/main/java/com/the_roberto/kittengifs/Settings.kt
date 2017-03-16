@@ -40,7 +40,7 @@ object Settings {
 
     fun getMaxOffset(context: Context): Int {
         val prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
-        return prefs.getInt(PREF_MAX_OFFSET, 100)
+        return Math.min(prefs.getInt(PREF_MAX_OFFSET, 100), 4998) //5000 is a limit for the public API
     }
 
     fun getViewsCount(context: Context): Long {

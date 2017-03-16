@@ -13,7 +13,8 @@ import android.widget.Toast
 import butterknife.bindView
 import com.the_roberto.kittengifs.event.GifFetchFailedEvent
 import com.the_roberto.kittengifs.event.NewGifArrivedEvent
-import de.greenrobot.event.EventBus
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 
 
 class KittenActivity : AppCompatActivity() {
@@ -41,7 +42,7 @@ class KittenActivity : AppCompatActivity() {
         }
 
         container.setOnClickListener {
-            nextKitten();
+            nextKitten()
         }
 
     }
@@ -86,6 +87,7 @@ class KittenActivity : AppCompatActivity() {
         eventBus.unregister(this)
     }
 
+    @Subscribe
     fun onEventMainThread(event: NewGifArrivedEvent) {
         Log.d(TAG, "onEventMainThread(NewGifArrivedEvent)")
         val imageUrlMp4 = event.imageUrlMp4
@@ -94,6 +96,7 @@ class KittenActivity : AppCompatActivity() {
         }
     }
 
+    @Subscribe
     fun onEventMainThread(event: GifFetchFailedEvent) {
         setProgressBarEnabled(false)
     }

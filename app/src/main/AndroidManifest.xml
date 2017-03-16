@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.the_roberto.kittengifs">
+<manifest package="com.the_roberto.kittengifs"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission
+        android:name="android.permission.WAKE_LOCK"
+        tools:node="remove"/>
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/KittensTheme"
-        android:name=".App">
+        android:theme="@style/KittensTheme">
         <activity
             android:name=".KittenActivity"
             android:label="@string/app_name"
@@ -28,7 +32,7 @@
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="0eaf4c7ee4aa620bd6d0deb07fa26179f9d33921" />
+            android:value="0eaf4c7ee4aa620bd6d0deb07fa26179f9d33921"/>
     </application>
 
 </manifest>

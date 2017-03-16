@@ -3,14 +3,14 @@ apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion 24
+    buildToolsVersion "23.0.3"
     defaultConfig {
         applicationId "com.the_roberto.kittengifs"
         minSdkVersion 15
-        targetSdkVersion 23
-        versionCode 14
-        versionName "0.5.2"
+        targetSdkVersion 24
+        versionCode 16
+        versionName "0.5.4"
     }
     buildTypes {
         debug {
@@ -30,22 +30,23 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.android.support:support-v4:23.0.1'
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:support-v4:24.2.1'
     compile 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
-    compile 'com.squareup.retrofit:retrofit:1.9.0'
-    compile 'com.google.code.gson:gson:2.3.1'
-    compile 'de.greenrobot:eventbus:2.4.0'
-    compile 'com.google.android.gms:play-services-analytics:8.1.0'
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.google.code.gson:gson:2.4'
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.google.android.gms:play-services-analytics:9.4.0'
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;
     }
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 buildscript {
-    ext.kotlin_version = '0.14.451'
+    ext.kotlin_version = '1.0.3'
     repositories {
-        mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"

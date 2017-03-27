@@ -24,9 +24,7 @@ class KittensPresenter : MvpBasePresenter<KittensView>() {
 
         val lastOpenedGif = Settings.getLastOpenedKitten(context)
         if (lastOpenedGif != null) {
-            if (isViewAttached) {
-                view.showKitten(lastOpenedGif)
-            }
+            view?.showKitten(lastOpenedGif)
         } else {
             loadNextKitten()
         }
@@ -40,30 +38,22 @@ class KittensPresenter : MvpBasePresenter<KittensView>() {
 
     fun loadNextKitten() {
         if (Settings.getViewsCount(context) + 1 >= Settings.getKittensBeforeAskingToRate(context)) {
-            if (isViewAttached) {
-                view.showRatingDialog()
-            }
+            view?.showRatingDialog()
         } else {
-            if (isViewAttached) {
-                view.showLoading()
-            }
+            view?.showLoading()
             kittensManager.loadNextKitten()
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: KittenLoadedEvent) {
-        if (isViewAttached) {
-            view.showKitten(event.imageUrlMp4)
-            incrementViewCount()
-        }
+        view?.showKitten(event.imageUrlMp4)
+        incrementViewCount()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: KittenFailedEvent) {
-        if (isViewAttached) {
-            view.showError()
-        }
+        view?.showError()
     }
 
     private fun incrementViewCount() {
@@ -74,9 +64,7 @@ class KittensPresenter : MvpBasePresenter<KittensView>() {
 
     private fun showViewCount() {
         val viewCount = Settings.getViewsCount(context)
-        if (isViewAttached) {
-            view.updateViewCount(viewCount)
-        }
+        view?.updateViewCount(viewCount)
     }
 
 }

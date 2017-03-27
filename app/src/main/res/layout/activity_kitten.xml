@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:foreground="?android:attr/selectableItemBackground">
 
-        <com.the_roberto.kittengifs.TextureVideoView
+        <com.the_roberto.kittengifs.ui.TextureVideoView
             android:id="@+id/video_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -23,35 +23,35 @@
         android:id="@+id/giphy_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:src="@drawable/giffy_logo"
         />
 
     <ProgressBar
         android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="?android:attr/progressBarStyleLarge"
         android:layout_centerInParent="true"
         android:visibility="gone"
         />
 
-    <com.the_roberto.kittengifs.CounterView
+    <TextView
         android:id="@+id/counter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
         android:layout_marginBottom="@dimen/counter_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:textSize="@dimen/counter_size"
-        android:textStyle="bold"
-        android:textColor="@android:color/white"
         android:shadowColor="@android:color/darker_gray"
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="1"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/counter_size"
+        android:textStyle="bold"
         tools:text="45"/>
 </RelativeLayout>

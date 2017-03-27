@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.the_roberto.kittengifs;
+package com.the_roberto.kittengifs.ui;
 
 import android.R;
 import android.app.AlertDialog;

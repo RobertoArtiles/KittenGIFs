@@ -1,18 +1,26 @@
 package com.the_roberto.kittengifs
 
 import android.app.Application
-
+import android.content.Context
 import com.crashlytics.android.Crashlytics
-
 import io.fabric.sdk.android.Fabric
+import kotlin.properties.Delegates
 
 class App : Application() {
+
+    //remove this hack with Dagger
+    companion object {
+        var context: Context by Delegates.notNull()
+    }
+
+    init {
+        context = this
+    }
 
     override fun onCreate() {
         super.onCreate()
         Fabric.with(this, Crashlytics())
         EventsTracker.init(this)
-        GifsController.init(this)
         migrate()
     }
 

@@ -10,16 +10,21 @@ import android.widget.TextView
 import android.widget.Toast
 import butterknife.bindView
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
+import com.the_roberto.kittengifs.App
 import com.the_roberto.kittengifs.EventsTracker
+import com.the_roberto.kittengifs.IntentStarter
 import com.the_roberto.kittengifs.R
-import com.the_roberto.kittengifs.shareKitten
 import com.the_roberto.kittengifs.ui.TextureVideoView
+import javax.inject.Inject
+import kotlin.properties.Delegates
 
 class KittensActivity : MvpActivity<KittensView, KittensPresenter>(), KittensView {
     val TAG = "KittensActivity2"
 
-    val container: View by bindView(R.id.container)
+    @Inject lateinit var intentStarter: IntentStarter
+    var activityComponent: KittensComponent by Delegates.notNull()
 
+    val container: View by bindView(R.id.container)
     val progressBar: View by bindView(R.id.progress_bar)
     val counterView: TextView by bindView(R.id.counter)
     val videoView: TextureVideoView by bindView(R.id.video_view)
@@ -27,6 +32,7 @@ class KittensActivity : MvpActivity<KittensView, KittensPresenter>(), KittensVie
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_kitten)
+        injectDependencies()
         super.onCreate(savedInstanceState)
 
         supportActionBar?.title = null
@@ -48,14 +54,14 @@ class KittensActivity : MvpActivity<KittensView, KittensPresenter>(), KittensVie
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.share -> {
-                shareKitten()
+                intentStarter.shareKitten(this)
                 return true
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    override fun createPresenter() = KittensPresenter()
+    override fun createPresenter() = activityComponent.presenter()
 
     override fun showKitten(url: String) {
         playVideo(url)
@@ -107,6 +113,13 @@ class KittensActivity : MvpActivity<KittensView, KittensPresenter>(), KittensVie
 
     fun setProgressBarVisible(visible: Boolean) {
         progressBar.visibility = if (visible) View.VISIBLE else View.GONE
+    }
+
+    private fun injectDependencies() {
+        activityComponent = (application as App)
+                .appComponent
+                .newKittensComponent()
+        activityComponent.inject(this)
     }
 
 }

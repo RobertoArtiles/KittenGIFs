@@ -9,15 +9,20 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.util.Log
+import com.the_roberto.kittengifs.App
 import com.the_roberto.kittengifs.EventsTracker
+import com.the_roberto.kittengifs.IntentStarter
 import com.the_roberto.kittengifs.R
-import com.the_roberto.kittengifs.Settings
+import com.the_roberto.kittengifs.model.Settings
+import javax.inject.Inject
 
 class RatingDialog : DialogFragment() {
 
     private val TAG = "RatingFragment"
+    @Inject lateinit var settings: Settings
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        injectDependencies()
         return AlertDialog.Builder(activity).setTitle(getString(R.string.dialog_rating_title)).setMessage(getString(R.string.dialog_rating_message))
                 .setPositiveButton(getString(R.string.dialog_rating_positive)) { dialog, which ->
                     neverAsk()
@@ -38,6 +43,10 @@ class RatingDialog : DialogFragment() {
         }.create()
     }
 
+    private fun injectDependencies() {
+        (activity.application as App).appComponent.inject(this)
+    }
+
 
     override fun onCancel(dialog: DialogInterface?) {
         super.onCancel(dialog)
@@ -46,10 +55,10 @@ class RatingDialog : DialogFragment() {
     }
 
     private fun later() {
-        Settings.setKittensBeforeAskingToRate(activity, Settings.getKittensBeforeAskingToRate(activity) * 4)
+        settings.setKittensBeforeAskingToRate(settings.getKittensBeforeAskingToRate() * 4)
     }
 
     private fun neverAsk() {
-        Settings.setKittensBeforeAskingToRate(activity, Integer.MAX_VALUE)
+        settings.setKittensBeforeAskingToRate(Integer.MAX_VALUE)
     }
 }

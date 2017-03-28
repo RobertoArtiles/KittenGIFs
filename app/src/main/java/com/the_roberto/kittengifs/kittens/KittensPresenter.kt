@@ -2,19 +2,20 @@ package com.the_roberto.kittengifs.kittens
 
 import android.content.Context
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
-import com.the_roberto.kittengifs.App
-import com.the_roberto.kittengifs.Settings
+import com.the_roberto.kittengifs.dagger.ForApplication
+import com.the_roberto.kittengifs.model.Settings
 import com.the_roberto.kittengifs.model.event.KittenFailedEvent
 import com.the_roberto.kittengifs.model.event.KittenLoadedEvent
 import com.the_roberto.kittengifs.model.kittens.KittensManager
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import javax.inject.Inject
 
-class KittensPresenter : MvpBasePresenter<KittensView>() {
-    private val eventBus = EventBus.getDefault()
-    private var context: Context = App.context
-    private val kittensManager: KittensManager = KittensManager(App.context)
+class KittensPresenter @Inject constructor(@ForApplication val context: Context,
+                                           val eventBus: EventBus,
+                                           val settings: Settings,
+                                           val kittensManager: KittensManager): MvpBasePresenter<KittensView>() {
 
     override fun attachView(attachedView: KittensView?) {
         super.attachView(attachedView)
@@ -22,7 +23,7 @@ class KittensPresenter : MvpBasePresenter<KittensView>() {
 
         showViewCount()
 
-        val lastOpenedGif = Settings.getLastOpenedKitten(context)
+        val lastOpenedGif = settings.getLastOpenedKitten()
         if (lastOpenedGif != null) {
             view?.showKitten(lastOpenedGif)
         } else {
@@ -37,7 +38,7 @@ class KittensPresenter : MvpBasePresenter<KittensView>() {
     }
 
     fun loadNextKitten() {
-        if (Settings.getViewsCount(context) + 1 >= Settings.getKittensBeforeAskingToRate(context)) {
+        if (settings.getViewsCount() + 1 >= settings.getKittensBeforeAskingToRate()) {
             view?.showRatingDialog()
         } else {
             view?.showLoading()
@@ -57,13 +58,13 @@ class KittensPresenter : MvpBasePresenter<KittensView>() {
     }
 
     private fun incrementViewCount() {
-        var viewCount = Settings.getViewsCount(context)
-        Settings.setViewsCount(context, ++viewCount)
+        var viewCount = settings.getViewsCount()
+        settings.setViewsCount(++viewCount)
         showViewCount()
     }
 
     private fun showViewCount() {
-        val viewCount = Settings.getViewsCount(context)
+        val viewCount = settings.getViewsCount()
         view?.updateViewCount(viewCount)
     }
 

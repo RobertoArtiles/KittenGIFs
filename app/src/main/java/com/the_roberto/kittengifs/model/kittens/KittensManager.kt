@@ -1,9 +1,8 @@
 package com.the_roberto.kittengifs.model.kittens
 
 import android.content.Context
-import android.util.Base64
-import com.the_roberto.kittengifs.Config
 import com.the_roberto.kittengifs.EventsTracker
+import com.the_roberto.kittengifs.R
 import com.the_roberto.kittengifs.dagger.ForApplication
 import com.the_roberto.kittengifs.giphy.GiphyService
 import com.the_roberto.kittengifs.giphy.SearchGifResponse
@@ -26,17 +25,13 @@ class KittensManager @Inject constructor(@ForApplication val context: Context, v
 
     private var service: GiphyService
     private val random = Random()
-    private var secret: String? = null
 
     init {
         val client = OkHttpClient.Builder().addNetworkInterceptor { chain ->
-            if (secret == null) {
-                secret = String(Base64.decode(Config.GIPHY_API_KEY, Base64.DEFAULT))
-            }
             val request = chain.request()
             val url = request.url()
                     .newBuilder()
-                    .addQueryParameter("api_key", secret)
+                    .addQueryParameter("api_key", context.getString(R.string.api_key))
                     .addQueryParameter("rating", "g")
                     .build()
             val newRequest = request.newBuilder().url(url).build()

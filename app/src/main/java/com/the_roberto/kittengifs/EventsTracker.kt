@@ -6,7 +6,7 @@ import com.google.android.gms.analytics.HitBuilders
 import com.google.android.gms.analytics.Tracker
 
 object EventsTracker {
-    public lateinit var googleAnalytics: GoogleAnalytics
+    lateinit var googleAnalytics: GoogleAnalytics
     private lateinit var tracker: Tracker
 
     fun init(context: Context) {

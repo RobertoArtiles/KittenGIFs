@@ -10,11 +10,11 @@ import android.widget.TextView
 import android.widget.Toast
 import butterknife.bindView
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
+import com.sprylab.android.widget.TextureVideoView
 import com.the_roberto.kittengifs.App
 import com.the_roberto.kittengifs.EventsTracker
 import com.the_roberto.kittengifs.IntentStarter
 import com.the_roberto.kittengifs.R
-import com.the_roberto.kittengifs.ui.TextureVideoView
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
